@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age and Gender Distribution by Country</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        canvas {
+            max-width: 800px;
+            max-height: 600px;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="ageGenderChart"></canvas>
+
+<script>
+    const ctx = document.getElementById('ageGenderChart').getContext('2d');
+    const ageGenderChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['USA', 'Canada', 'UK', 'Germany', 'France'], // Countries
+            datasets: [
+                {
+                    label: 'Male (0-9)',
+                    data: [15, 10, 12, 8, 14], // Sample data for males aged 0-9
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                },
+                {
+                    label: 'Female (0-9)',
+                    data: [10, 7, 9, 5, 8], // Sample data for females aged 0-9
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                },
+                {
+                    label: 'Male (10-19)',
+                    data: [20, 15, 18, 12, 16], // Sample data for males aged 10-19
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                },
+                {
+                    label: 'Female (10-19)',
+                    data: [15, 10, 14, 9, 11], // Sample data for females aged 10-19
+                    backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                },
+                {
+                    label: 'Male (20-29)',
+                    data: [30, 25, 20, 15, 22], // Sample data for males aged 20-29
+                    backgroundColor: 'rgba(255, 206, 86, 0.6)',
+                },
+                {
+                    label: 'Female (20-29)',
+                    data: [25, 20, 18, 14, 19], // Sample data for females aged 20-29
+                    backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Number of People'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Countries'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Age and Gender Distribution by Country'
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
