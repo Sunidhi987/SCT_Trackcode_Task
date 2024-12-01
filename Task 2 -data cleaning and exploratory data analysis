@@ -1,0 +1,57 @@
+import pandas as pd
+
+# Load the Titanic dataset
+url = 'https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv'
+titanic_data = pd.read_csv(url)
+
+# Display the first few rows of the dataset
+print(titanic_data.head())
+
+# Check for missing values
+print(titanic_data.isnull().sum())
+
+# Fill missing Age values with the median
+titanic_data['Age'].fillna(titanic_data['Age'].median(), inplace=True)
+
+# Fill missing Embarked values with the most frequent value
+titanic_data['Embarked'].fillna(titanic_data['Embarked'].mode()[0], inplace=True)
+
+# Drop Cabin column
+titanic_data.drop('Cabin', axis=1, inplace=True)
+
+# Convert 'Sex' to numeric
+titanic_data['Sex'] = titanic_data['Sex'].map({'male': 0, 'female': 1})
+
+# Convert 'Embarked' to numeric
+titanic_data['Embarked'] = titanic_data['Embarked'].map({'C': 0, 'Q': 1, 'S': 2})
+
+print(titanic_data.describe())
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Set the style for seaborn
+sns.set(style="whitegrid")
+
+# 1. Age Distribution
+plt.figure(figsize=(10, 6))
+sns.histplot(titanic_data['Age'], bins=30, kde=True)
+plt.title('Age Distribution of Passengers')
+plt.xlabel('Age')
+plt.ylabel('Frequency')
+plt.show()
+
+# 2. Survival Rate by Gender
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Sex', y='Survived', data=titanic_data)
+plt.title('Survival Rate by Gender')
+plt.xticks(ticks=[0, 1], labels=['Male', 'Female'])
+plt.ylabel('Survival Rate')
+plt.show()
+
+# 3. Survival Rate by Passenger Class
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Pclass', y='Survived', data=titanic_data)
+plt.title('Survival Rate by Passenger Class')
+plt.ylabel('Survival Rate')
+plt.show()
