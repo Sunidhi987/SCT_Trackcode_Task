@@ -1,0 +1,60 @@
+pip install pandas matplotlib seaborn folium
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import folium
+# Load dataset
+df = pd.read_csv('traffic_accidents.csv')  # Adjust the file path accordingly
+print(df.head())
+print(df.info())
+print(df.describe())
+# Check for missing values
+print(df.isnull().sum())
+
+# Drop rows with missing values in critical columns
+df = df.dropna(subset=['road_condition', 'weather', 'time_of_day', 'latitude', 'longitude'])
+# Count accidents by road condition
+road_condition_counts = df['road_condition'].value_counts()
+sns.barplot(x=road_condition_counts.index, y=road_condition_counts.values)
+plt.title('Accidents by Road Condition')
+plt.xlabel('Road Condition')
+plt.ylabel('Number of Accidents')
+plt.xticks(rotation=45)
+plt.show()
+
+# Count accidents by weather
+weather_counts = df['weather'].value_counts()
+sns.barplot(x=weather_counts.index, y=weather_counts.values)
+plt.title('Accidents by Weather Condition')
+plt.xlabel('Weather Condition')
+plt.ylabel('Number of Accidents')
+plt.xticks(rotation=45)
+plt.show()
+
+# Analyze accidents by time of day
+time_counts = df['time_of_day'].value_counts().sort_index()
+sns.lineplot(x=time_counts.index, y=time_counts.values)
+plt.title('Accidents by Time of Day')
+plt.xlabel('Time of Day')
+plt.ylabel('Number of Accidents')
+plt.xticks(rotation=45)
+plt.show()
+# Create a Folium map centered around the average latitude/longitude
+average_lat = df['latitude'].mean()
+average_lon = df['longitude'].mean()
+accident_map = folium.Map(location=[average_lat, average_lon], zoom_start=12)
+
+# Add accident points to the map
+for _, accident in df.iterrows():
+    folium.CircleMarker(
+        location=(accident['latitude'], accident['longitude']),
+        radius=5,
+        color='red',
+        fill=True,
+        fill_color='red',
+        fill_opacity=0.6,
+        popup=f"Time: {accident['time_of_day']}, Weather: {accident['weather']}, Road Condition: {accident['road_condition']}"
+    ).add_to(accident_map)
+
+# Save the map to an HTML file
+accident_map.save('accident_hotspots.html')
